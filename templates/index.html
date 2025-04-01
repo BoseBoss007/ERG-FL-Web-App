@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERG PsychAnalyzer</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ERG PsychAnalyzer</h1>
+        <h2>Upload your ERG Patient data and find out Mental Disorders.</h2>
+        <p style="color: green;">Server is Running...</p>
+        
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Upload ERG dataset:</label>
+            <input type="file" name="file" required>
+            <button type="submit">Upload and Train</button>
+        </form>
+
+        {% if loading %}
+        <p style="color: blue;">Loading Results... Please wait.</p>
+        {% endif %}
+        
+        {% if completed %}
+        <p style="color: green;">Training completed. Results saved.</p>
+        <h3>Download Results:</h3>
+        <ul>
+            <li><a id="downloadGraph" href="{{ url_for('download_file', filename='accuracy_graph.png') }}">Download Accuracy Graph</a></li>
+            <li><a id="downloadPredictions" href="{{ url_for('download_file', filename='client1_predictions.csv') }}">Download Predictions</a></li>
+        </ul>
+
+        <script>
+            // Automatically trigger downloads
+            window.onload = function() {
+                document.getElementById("downloadGraph").click();
+                document.getElementById("downloadPredictions").click();
+            };
+        </script>
+        {% endif %}
+    </div>
+</body>
+</html>
